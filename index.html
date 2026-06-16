@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>小宇宙单集下载</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: "Microsoft YaHei", "Segoe UI", sans-serif;
+      background: #eef4ff;
+      color: #27324a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 28px 16px;
+      background:
+        radial-gradient(circle at top left, #d9e8ff 0, transparent 38%),
+        radial-gradient(circle at bottom right, #eadfff 0, transparent 42%),
+        #f6f8ff;
+    }
+    main {
+      width: min(920px, 100%);
+      padding: 32px;
+      border: 1px solid #d9e1f2;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, .92);
+      box-shadow: 0 24px 70px rgba(76, 92, 140, .16);
+    }
+    h1 { margin: 0 0 8px; font-size: 28px; }
+    .hint { margin: 0 0 26px; color: #64718d; line-height: 1.65; }
+    label { display: block; margin: 18px 0 8px; font-weight: 650; }
+    textarea, input {
+      width: 100%;
+      border: 1px solid #c7d2e8;
+      border-radius: 10px;
+      padding: 12px 14px;
+      background: #fbfcff;
+      color: #27324a;
+      font: inherit;
+      outline: none;
+    }
+    textarea { min-height: 130px; resize: vertical; line-height: 1.55; }
+    textarea:focus, input:focus {
+      border-color: #7c83e8;
+      box-shadow: 0 0 0 3px rgba(124, 131, 232, .13);
+    }
+    .grid, .sources { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .panel {
+      padding: 18px;
+      border: 1px solid #dce3f2;
+      border-radius: 12px;
+      background: linear-gradient(145deg, #ffffff, #f6f8ff);
+    }
+    .panel h2 { margin: 0 0 8px; font-size: 18px; }
+    .panel .hint { margin-bottom: 12px; font-size: 14px; }
+    .panel label { margin-top: 12px; }
+    .optional { color: #7b879f; font-size: 13px; font-weight: 400; }
+    button {
+      width: 100%;
+      margin-top: 24px;
+      padding: 13px 18px;
+      border: 0;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #6875e8, #8b6edb);
+      color: white;
+      font: 700 16px inherit;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(104, 117, 232, .24);
+    }
+    button:hover { filter: brightness(.96); }
+    button:disabled { cursor: wait; opacity: .65; }
+    .secondary {
+      margin-top: 12px;
+      background: linear-gradient(135deg, #64a9c8, #638ccf);
+    }
+    #status { margin: 18px 0 0; min-height: 24px; color: #4b5cb5; }
+    #results { display: grid; gap: 12px; margin-top: 16px; }
+    .result {
+      padding: 14px;
+      border: 1px solid #d8e0ef;
+      border-radius: 10px;
+      background: #ffffff;
+    }
+    .result.ok { border-left: 4px solid #22c55e; }
+    .result.fail { border-left: 4px solid #ef4444; }
+    pre {
+      max-height: 260px;
+      overflow: auto;
+      margin: 10px 0 0;
+      padding: 12px;
+      border-radius: 8px;
+      background: #eef2fa;
+      color: #36415a;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    @media (max-width: 620px) {
+      main { padding: 22px; }
+      .grid, .sources { grid-template-columns: 1fr; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>小宇宙单集下载</h1>
+    <p class="hint">
+      手动输入和 Chrome 扩展发送的地址会合并去重。多个任务按顺序执行，
+      每次启动 <code>python main.py</code> 前间隔 0.5 秒。
+    </p>
+
+    <form id="download-form">
+      <div class="sources">
+        <section class="panel">
+          <h2>手动输入</h2>
+          <p class="hint">多个网址可用中文逗号、英文逗号或换行分隔。</p>
+          <label for="urls">单集网址</label>
+          <textarea id="urls" placeholder="https://www.xiaoyuzhoufm.com/episode/645c7f50306513184ca9efc9?s=..."></textarea>
+        </section>
+
+        <section class="panel">
+          <h2>Chrome 扩展</h2>
+          <p class="hint">点击浏览器工具栏中的扩展图标，即可发送当前所有小宇宙单集标签页。</p>
+          <label for="chrome-urls">扩展发送的网址</label>
+          <textarea id="chrome-urls" readonly placeholder="尚未收到网址"></textarea>
+          <button class="secondary" id="refresh-urls" type="button">刷新扩展网址</button>
+        </section>
+      </div>
+
+      <div class="grid">
+        <div>
+          <label for="token">Token <span class="optional">可选</span></label>
+          <input id="token" type="password" autocomplete="off" placeholder="refresh token">
+        </div>
+        <div>
+          <label for="device-id">Device ID <span class="optional">可选</span></label>
+          <input id="device-id" autocomplete="off" placeholder="x-jike-device-id">
+        </div>
+      </div>
+
+      <button id="submit" type="submit">开始下载</button>
+    </form>
+
+    <p id="status" role="status"></p>
+    <section id="results" aria-live="polite"></section>
+  </main>
+
+  <script>
+    const form = document.querySelector("#download-form");
+    const submitButton = document.querySelector("#submit");
+    const refreshButton = document.querySelector("#refresh-urls");
+    const chromeUrls = document.querySelector("#chrome-urls");
+    const status = document.querySelector("#status");
+    const results = document.querySelector("#results");
+
+    function resultCard(item) {
+      const card = document.createElement("article");
+      card.className = `result ${item.success ? "ok" : "fail"}`;
+
+      const title = document.createElement("strong");
+      title.textContent = `${item.success ? "成功" : "失败"}：${item.episode_id}`;
+      card.append(title);
+
+      const output = document.createElement("pre");
+      output.textContent = item.output || "命令未返回文本。";
+      card.append(output);
+      return card;
+    }
+
+    async function refreshImportedUrls(showStatus = true) {
+      try {
+        const response = await fetch("/api/import-urls");
+        const data = await response.json();
+        chromeUrls.value = data.urls.join("\n");
+        if (showStatus) {
+          status.textContent = data.urls.length
+            ? `已收到 ${data.urls.length} 个小宇宙单集网址。`
+            : "扩展还没有发送网址。";
+        }
+      } catch (error) {
+        if (showStatus) status.textContent = `读取失败：${error.message}`;
+      }
+    }
+
+    refreshButton.addEventListener("click", () => refreshImportedUrls());
+    window.addEventListener("focus", () => refreshImportedUrls(false));
+    refreshImportedUrls(false);
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      submitButton.disabled = true;
+      status.textContent = "正在执行，请勿关闭页面。多个网址将按顺序下载……";
+      results.replaceChildren();
+
+      try {
+        const response = await fetch("/api/download", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            urls: [
+              document.querySelector("#urls").value,
+              chromeUrls.value
+            ].filter(Boolean).join("\n"),
+            token: document.querySelector("#token").value,
+            device_id: document.querySelector("#device-id").value
+          })
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error([data.error, data.output].filter(Boolean).join("\n"));
+        }
+
+        data.results.forEach((item) => results.append(resultCard(item)));
+        const successCount = data.results.filter((item) => item.success).length;
+        status.textContent = `执行完成：成功 ${successCount} 个，失败 ${data.results.length - successCount} 个。`;
+      } catch (error) {
+        status.textContent = `执行失败：${error.message}`;
+      } finally {
+        submitButton.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

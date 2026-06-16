@@ -1,0 +1,10 @@
+certifi==2026.2.25
+charset-normalizer==3.4.4
+colorama==0.4.6
+idna==3.11
+packaging==25.0
+requests==2.32.5
+setuptools==80.10.2
+tqdm==4.67.3
+urllib3==2.6.3
+wheel==0.46.3

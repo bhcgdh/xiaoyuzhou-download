@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Qianwen Audio Helper",
+  "version": "2.0.1",
+  "description": "Upload local audio to Qianwen and move exported transcript downloads into the project download folder.",
+  "permissions": ["tabs", "storage", "windows", "downloads"],
+  "host_permissions": [
+    "http://127.0.0.1:8765/*",
+    "https://www.qianwen.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.qianwen.com/discover/audioread*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "Qianwen Audio Helper",
+    "default_popup": "popup.html"
+  }
+}

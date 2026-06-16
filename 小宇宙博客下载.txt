@@ -1,0 +1,49 @@
+conda activate py313
+
+cd F:\life\b1_小宇宙下载_xyz-dl
+
+单个下载
+python main.py https://www.xiaoyuzhoufm.com/episode/68371aa438dcc57c6473b586
+
+打开 F:\life\b1_小宇宙下载_xyz-dl\ids.txt， 更新id
+notepad ids.txt
+
+开始下载：
+python batch_run.py
+
+所有下载放一起：
+python F:\life\b1_小宇宙下载_xyz-dl\get_all_m4a.py
+
+
+======================= 初始使用时流程记录 =======================
+小宇宙博客语音链接下载
+
+构建一个新的环境，满足该工具包的使用
+conda create -n py313 python=3.13
+
+1）安装 xyz-dl, 根据
+https://github.com/shiquda/xyz-dl/tree/main
+
+1) 下载安装包
+git clone https://github.com/shiquda/xyz-dl.git
+
+2）打开安装包
+cd F:\xyz-dl
+conda activate py313
+
+3）安装所有的依赖
+pip install .
+
+4）进行登录 》 涉及的登录信息，通过网页版本》右键检查》登录后的出现的链接信息获取
+python main.py --login
+
+5）手机链接发送给电脑端，电脑页面进行打开，获取url链接，复制获取博客id,在命令行端可以进行下载。
+python main.py https://www.xiaoyuzhoufm.com/episode/68371aa438dcc57c6473b586
+
+6）链接复制到txt文件中，ids.txt中
+
+7）下载多个链接，执行如下命令
+python batch_run.py
+
+8）下载的音频复制到一起
+python F:\xyz-dl\get_all_m4a.py

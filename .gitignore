@@ -1,0 +1,35 @@
+# Python caches and build output
+__pycache__/
+*.py[cod]
+*$py.class
+build/
+dist/
+wheels/
+*.egg-info/
+*.spec
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Local credentials and runtime config
+credentials.json
+xyz-config.json
+.env
+.env.*
+
+# Downloaded audio, exports, and generated data
+download/
+data/
+datas/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+
+# Tool/editor folders
+.claude/
+.vscode/
+.idea/

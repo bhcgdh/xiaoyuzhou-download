@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      width: 390px;
+      margin: 0;
+      padding: 18px;
+      font: 14px/1.5 "Microsoft YaHei", sans-serif;
+      background: #f5f7ff;
+      color: #27324a;
+    }
+    h1 { margin: 0 0 8px; font-size: 18px; }
+    .hint { margin: 0 0 10px; color: #66728b; }
+    select, button { width: 100%; border-radius: 8px; font: inherit; }
+    select {
+      min-height: 210px;
+      padding: 8px;
+      border: 1px solid #c7d2e8;
+      background: white;
+    }
+    button {
+      margin-top: 12px;
+      padding: 11px;
+      border: 0;
+      background: linear-gradient(135deg, #6875e8, #8b6edb);
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button:disabled { opacity: .6; cursor: wait; }
+    .export { background: linear-gradient(135deg, #3c9a9a, #4f7fc8); }
+    #status { margin: 10px 0 0; color: #5c6882; white-space: pre-wrap; }
+    .warning { color: #b45309; }
+    .error { color: #b91c1c; }
+  </style>
+</head>
+<body>
+  <h1>Qianwen Audio Helper</h1>
+  <p class="hint">Use Ctrl/Shift to select multiple files. Max 50 files per upload.</p>
+  <select id="files" size="8" multiple aria-label="Select audio"></select>
+  <button id="upload" type="button" disabled>Upload selected audio</button>
+  <button class="export" id="watch-export" type="button">Watch Qianwen exports</button>
+  <p class="hint">After watching starts, manually export in Qianwen. Finished transcript downloads are moved to download\\千问导出.</p>
+  <p id="status">Loading local audio files...</p>
+  <script src="popup.js"></script>
+</body>
+</html>
