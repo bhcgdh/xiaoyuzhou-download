@@ -4,18 +4,10 @@ const MAX_FILES = 50;
 
 const filesElement = document.querySelector("#files");
 const uploadButton = document.querySelector("#upload");
-const watchExportButton = document.querySelector("#watch-export");
 const statusElement = document.querySelector("#status");
 
 function formatSize(bytes) {
   return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
-}
-
-async function showLastExportStatus() {
-  const { lastExportStatus } = await chrome.storage.local.get("lastExportStatus");
-  if (!lastExportStatus) return;
-  statusElement.className = lastExportStatus.success ? "" : "error";
-  statusElement.textContent = `Export watcher: ${lastExportStatus.text}`;
 }
 
 function selectedFiles() {
@@ -78,27 +70,14 @@ uploadButton.addEventListener("click", async () => {
     type: "START_UPLOAD",
     files
   });
-  if (!response?.success) {
+  if (response?.success) {
+    statusElement.textContent = "Upload started in Qianwen.";
+  } else {
     uploadButton.disabled = false;
     statusElement.className = "error";
     statusElement.textContent = `Start failed: ${response?.error || "Unknown error"}`;
   }
 });
 
-watchExportButton.addEventListener("click", async () => {
-  watchExportButton.disabled = true;
-  statusElement.className = "";
-  statusElement.textContent = "Starting export watcher...";
-
-  const response = await chrome.runtime.sendMessage({ type: "START_EXPORT_WATCH" });
-  if (response?.success) {
-    statusElement.textContent = "Watching for 10 minutes. Export files manually in Qianwen now.";
-  } else {
-    statusElement.className = "error";
-    statusElement.textContent = `Watch failed: ${response?.error || "Unknown error"}`;
-  }
-  watchExportButton.disabled = false;
-});
-
 filesElement.addEventListener("change", updateSelectionStatus);
-loadFiles().then(showLastExportStatus);
+loadFiles();

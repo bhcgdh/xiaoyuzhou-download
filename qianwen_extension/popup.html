@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <style>
     body {
-      width: 390px;
+      width: 380px;
       margin: 0;
       padding: 18px;
       font: 14px/1.5 "Microsoft YaHei", sans-serif;
@@ -15,7 +15,7 @@
     .hint { margin: 0 0 10px; color: #66728b; }
     select, button { width: 100%; border-radius: 8px; font: inherit; }
     select {
-      min-height: 210px;
+      min-height: 220px;
       padding: 8px;
       border: 1px solid #c7d2e8;
       background: white;
@@ -30,7 +30,6 @@
       cursor: pointer;
     }
     button:disabled { opacity: .6; cursor: wait; }
-    .export { background: linear-gradient(135deg, #3c9a9a, #4f7fc8); }
     #status { margin: 10px 0 0; color: #5c6882; white-space: pre-wrap; }
     .warning { color: #b45309; }
     .error { color: #b91c1c; }
@@ -39,10 +38,8 @@
 <body>
   <h1>Qianwen Audio Helper</h1>
   <p class="hint">Use Ctrl/Shift to select multiple files. Max 50 files per upload.</p>
-  <select id="files" size="8" multiple aria-label="Select audio"></select>
-  <button id="upload" type="button" disabled>Upload selected audio</button>
-  <button class="export" id="watch-export" type="button">Watch Qianwen exports</button>
-  <p class="hint">After watching starts, manually export in Qianwen. Finished transcript downloads are moved to download\\千问导出.</p>
+  <select id="files" size="9" multiple aria-label="Select audio"></select>
+  <button id="upload" type="button" disabled>Upload selected audio and confirm</button>
   <p id="status">Loading local audio files...</p>
   <script src="popup.js"></script>
 </body>
