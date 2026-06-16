@@ -11,7 +11,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 async function startUpload(files) {
   if (!Array.isArray(files) || files.length === 0 || files.length > 50) {
-    throw new Error("Select 1 to 50 audio files.");
+    throw new Error("请选择 1 到 50 个音频。");
   }
 
   await chrome.storage.local.set({ pendingUploads: files });

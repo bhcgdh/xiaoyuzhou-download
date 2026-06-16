@@ -10,7 +10,7 @@ function waitFor(getValue, timeoutMs = 30000) {
         resolve(value);
       } else if (Date.now() - started > timeoutMs) {
         clearInterval(timer);
-        reject(new Error("Timed out waiting for Qianwen upload controls."));
+        reject(new Error("等待千问上传控件超时。"));
       }
     }, 300);
   });
@@ -20,7 +20,7 @@ async function readAudio(pendingUpload) {
   const response = await fetch(
     `${APP_URL}/api/audio-file?path=${encodeURIComponent(pendingUpload.path)}`
   );
-  if (!response.ok) throw new Error(`Unable to read audio: ${pendingUpload.name}`);
+  if (!response.ok) throw new Error(`无法读取音频：${pendingUpload.name}`);
 
   const blob = await response.blob();
   return new File([blob], pendingUpload.name, {
@@ -51,8 +51,8 @@ async function uploadPendingFiles() {
       ), 180000);
     confirmButton.click();
   } catch (error) {
-    console.error("Qianwen audio upload failed:", error);
-    alert(`Qianwen audio upload failed: ${error.message}`);
+    console.error("千问音频上传失败：", error);
+    alert(`千问音频上传失败：${error.message}`);
   }
 }
 
